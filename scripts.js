@@ -69,3 +69,39 @@ function sectionCheck(target) {
     return;
 }
 
+//функции, проверяющие соответствие текущей даты параметрам
+
+function checkCurrentDate(start, end) {
+  let answer = false;
+  const now = new Date();
+  const parsedNow = Date.parse(now);
+  const parsedStart = Date.parse(start);
+  const parsedEnd = Date.parse(end);
+  if (parsedStart < parsedNow && parsedEnd > now) {
+    answer = true;
+  }
+  return answer; //проверка, не настала ли какая-то дата, для таймеров на ПРОМЕЖУТОК ВРЕМЕНИ
+}
+
+function checkDateFrom(start) {
+  let answer = false;
+  const now = new Date();
+  const parsedNow = Date.parse(now);
+  const parsedStart = Date.parse(start);
+  if (parsedStart < parsedNow) {
+    answer = true;
+  }
+  return answer; //проверка, не настала ли какая-то дата, для таймеров ПОСЛЕ
+}
+
+function checkDateTo(end) {
+  let answer = false;
+  const now = new Date();
+  const parsedNow = Date.parse(now);
+  const parsedEnd = Date.parse(end);
+  if (parsedNow < parsedEnd) {
+    answer = true;
+  }
+  return answer; //проверка, не настала ли какая-то дата, для таймеров ДО
+}
+
