@@ -1,6 +1,6 @@
 //плавный скролл до объекта (target)
 
-const smoothScroll = function (target, duration) {
+const smoothScroll = function (target, duration=500) {
   let targetPosition = target.getBoundingClientRect().top;
   let startPosition = window.pageYOffset;
   let startTime = null;
@@ -22,7 +22,27 @@ const smoothScroll = function (target, duration) {
   requestAnimationFrame(animation);
 };
 
-//проверка, находится ли объект в окне
+//повесить плавный скролл
+
+const setSmoothScrollEvents = (from, to) => {
+    const setOneEvent = (from, to) => {
+        from.addEventListener('pointerdown', () => {
+            smoothScroll(to);
+        });
+    };
+
+    const setMultiplyEvents = (from, to) => {
+        for (let i = 0; i < from.length; i++) {
+            from[i].addEventListener('pointerdown', () => {
+                smoothScroll(to);
+            });
+        }
+    };
+
+    from.length ? setMultiplyEvents(from, to) : setOneEvent(from, to);
+};
+
+//проверка, находится ли объект в окне (см также https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
 
 function visabilityCheck(target) {
     let targetPosition = {
