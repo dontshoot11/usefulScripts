@@ -125,3 +125,27 @@ function checkDateTo(end) {
   return answer; //проверка, не настала ли какая-то дата, для таймеров ДО
 }
 
+//определение ОС по юзерагенту
+
+const userDeviceArray = [
+  { device: 'Android', platform: /Android/ },
+  { device: 'iOS', platform: /iPhone/ },
+  { device: 'iOS', platform: /iPad/ },
+  { device: 'Symbian', platform: /Symbian/ },
+  { device: 'Windows Phone', platform: /Windows Phone/ },
+  { device: 'Tablet OS', platform: /Tablet OS/ },
+  { device: 'Linux', platform: /Linux/ },
+  { device: 'Windows', platform: /Windows NT/ },
+  { device: 'MacOS', platform: /Macintosh/ },
+ ];
+
+const platform = navigator.userAgent;
+
+function getPlatform() {
+  for (let i in userDeviceArray) {
+    if (userDeviceArray[i].platform.test(platform)) {
+      return userDeviceArray[i].device;
+        }
+      }
+  return 'Неизвестная платформа!' + platform;
+  }
