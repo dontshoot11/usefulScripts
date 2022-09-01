@@ -104,7 +104,7 @@ function sectionCheck(target) {
       window.pageYOffset + target.getBoundingClientRect().bottom;
     const windowBottom =
       window.pageYOffset + document.documentElement.clientHeight;
-    const screenCenter = document.documentElement.clientHeight / 2;
+    const screenCenter = document.documentElement.clientHeight / 2; //это координаты, относительно которых проводится проверка. уменьшая коэф.деления, двигаем вверх, увеличивая, вниз относительно вьюпорта
     if (
       windowBottom - targetTop > screenCenter &&
       windowBottom < targetBottom + screenCenter
