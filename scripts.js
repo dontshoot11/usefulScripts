@@ -71,6 +71,27 @@ function visabilityCheck(target) {
     }
 }
 
+
+
+//еще одна функция, проверяющая, находится ли объект во вьюпорте (в данном случае, пересек ли он середину экрана верхней границей)
+
+function visabilityCheck(target) {
+    const targetTop = window.pageYOffset + target.getBoundingClientRect().top;
+    const targetBottom =
+      window.pageYOffset + target.getBoundingClientRect().bottom;
+    const windowBottom =
+      window.pageYOffset + document.documentElement.clientHeight;
+    const screenCenter = document.documentElement.clientHeight / 2; 
+    //screenCenter это координаты, относительно которых проводится проверка. уменьшая коэф.деления, двигаем вверх, увеличивая, вниз относительно вьюпорта
+    if (
+      windowBottom - targetTop > screenCenter &&
+      windowBottom < targetBottom + screenCenter
+    ) {
+      return true;
+    }
+    return false;
+}
+
 //debounce
 
 function debounce(f, ms) {
@@ -89,31 +110,18 @@ function debounce(f, ms) {
 
 //пример 
 
-   window.addEventListener(
+ window.addEventListener(
         'scroll',
         debounce(() => {
-            console.log('dsds');
-        }, 500)
+            for (let i = 0; i < heroItems.length; i++) {
+                if (visabilityCheck(heroItems[i])) {
+                    heroBg.className = `page-m-free-demo__background-wrap hand${
+                        i + 1
+                    }`;
+                }
+            }
+        }, 150)
     );
-
-//еще одна функция, проверяющая, находится ли объект во вьюпорте (в данном случае, зашел ли он на нижнюю половину экрана)
-
-function sectionCheck(target) {
-    const targetTop = window.pageYOffset + target.getBoundingClientRect().top;
-    const targetBottom =
-      window.pageYOffset + target.getBoundingClientRect().bottom;
-    const windowBottom =
-      window.pageYOffset + document.documentElement.clientHeight;
-    const screenCenter = document.documentElement.clientHeight / 2; 
-    //screenCenter это координаты, относительно которых проводится проверка. уменьшая коэф.деления, двигаем вверх, увеличивая, вниз относительно вьюпорта
-    if (
-      windowBottom - targetTop > screenCenter &&
-      windowBottom < targetBottom + screenCenter
-    ) {
-      return true;
-    }
-    return false;
-}
 
 //функции, проверяющие соответствие текущей даты параметрам
 
