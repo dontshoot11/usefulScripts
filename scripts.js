@@ -86,7 +86,7 @@ function sectionCheck(target) {
     ) {
       return true;
     }
-    return;
+    return false;
 }
 
 //функции, проверяющие соответствие текущей даты параметрам
