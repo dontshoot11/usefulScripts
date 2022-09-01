@@ -71,6 +71,31 @@ function visabilityCheck(target) {
     }
 }
 
+//debounce
+
+function debounce(f, ms) {
+    let isCooldown = false;
+
+    return function () {
+        if (isCooldown) return;
+
+        f.apply(this, arguments);
+
+        isCooldown = true;
+
+        setTimeout(() => (isCooldown = false), ms);
+    };
+}
+
+//пример 
+
+   window.addEventListener(
+        'scroll',
+        debounce(() => {
+            console.log('dsds');
+        }, 500)
+    );
+
 //еще одна функция, проверяющая, находится ли объект во вьюпорте (в данном случае, зашел ли он на нижнюю половину экрана)
 
 function sectionCheck(target) {
