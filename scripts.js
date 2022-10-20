@@ -1,25 +1,25 @@
 //плавный скролл до объекта (target)
 
-const smoothScroll = function (target, duration=500) {
-  let targetPosition = target.getBoundingClientRect().top;
-  let startPosition = window.pageYOffset;
-  let startTime = null;
+const smoothScroll = function (target, duration = 500) {
+    let targetPosition = target.getBoundingClientRect().top;
+    let startPosition = window.pageYOffset;
+    let startTime = null;
 
-  const ease = function (t, b, c, d) {
-    t /= d / 2;
-    if (t < 1) return (c / 2) * t * t + b;
-    t--;
-    return (-c / 2) * (t * (t - 2) - 1) + b;
-  };
+    const ease = function (t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return (c / 2) * t * t + b;
+        t--;
+        return (-c / 2) * (t * (t - 2) - 1) + b;
+    };
 
-  const animation = function (currentTime) {
-    if (startTime === null) startTime = currentTime;
-    const timeElapsed = currentTime - startTime;
-    const run = ease(timeElapsed, startPosition, targetPosition, duration);
-    window.scrollTo(0, run);
-    if (timeElapsed < duration) requestAnimationFrame(animation);
-  };
-  requestAnimationFrame(animation);
+    const animation = function (currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = ease(timeElapsed, startPosition, targetPosition, duration);
+        window.scrollTo(0, run);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+    };
+    requestAnimationFrame(animation);
 };
 
 //повесить плавный скролл
@@ -35,6 +35,34 @@ const setSmoothScrollEvents = (from, to) => {
         for (let i = 0; i < from.length; i++) {
             from[i].addEventListener('pointerdown', () => {
                 smoothScroll(to);
+            });
+        }
+    };
+
+    from.length ? setMultiplyEvents(from, to) : setOneEvent(from, to);
+};
+
+//то же самое через srollIntoView
+
+const setSmoothScrollEvents = (from, to) => {
+    const setOneEvent = (from, to) => {
+        from.addEventListener('pointerdown', () => {
+            to.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest',
+            });
+        });
+    };
+
+    const setMultiplyEvents = (from, to) => {
+        for (let i = 0; i < from.length; i++) {
+            from[i].addEventListener('pointerdown', () => {
+                to.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest',
+                });
             });
         }
     };
@@ -71,23 +99,21 @@ function visabilityCheck(target) {
     }
 }
 
-
-
 //еще одна функция, проверяющая, находится ли объект во вьюпорте (в данном случае, пересек ли он середину экрана верхней границей)
 
 function visabilityCheck(target) {
     const targetTop = window.pageYOffset + target.getBoundingClientRect().top;
     const targetBottom =
-      window.pageYOffset + target.getBoundingClientRect().bottom;
+        window.pageYOffset + target.getBoundingClientRect().bottom;
     const windowBottom =
-      window.pageYOffset + document.documentElement.clientHeight;
-    const screenCenter = document.documentElement.clientHeight / 2; 
+        window.pageYOffset + document.documentElement.clientHeight;
+    const screenCenter = document.documentElement.clientHeight / 2;
     //screenCenter это координаты, относительно которых проводится проверка. уменьшая коэф.деления, двигаем вверх, увеличивая, вниз относительно вьюпорта
     if (
-      windowBottom - targetTop > screenCenter &&
-      windowBottom < targetBottom + screenCenter
+        windowBottom - targetTop > screenCenter &&
+        windowBottom < targetBottom + screenCenter
     ) {
-      return true;
+        return true;
     }
     return false;
 }
@@ -108,78 +134,78 @@ function debounce(f, ms) {
     };
 }
 
-//пример 
+//пример
 
- window.addEventListener(
-        'scroll',
-        debounce(() => {
-            for (let i = 0; i < heroItems.length; i++) {
-                if (visabilityCheck(heroItems[i])) {
-                    heroBg.className = `page-m-free-demo__background-wrap hand${
-                        i + 1
-                    }`;
-                }
+window.addEventListener(
+    'scroll',
+    debounce(() => {
+        for (let i = 0; i < heroItems.length; i++) {
+            if (visabilityCheck(heroItems[i])) {
+                heroBg.className = `page-m-free-demo__background-wrap hand${
+                    i + 1
+                }`;
             }
-        }, 150)
-    );
+        }
+    }, 150)
+);
 
 //функции, проверяющие соответствие текущей даты параметрам
 
 function checkCurrentDate(start, end) {
-  let answer = false;
-  const now = new Date();
-  const parsedNow = Date.parse(now);
-  const parsedStart = Date.parse(start);
-  const parsedEnd = Date.parse(end);
-  if (parsedStart < parsedNow && parsedEnd > now) {
-    answer = true;
-  }
-  return answer; //проверка, не настала ли какая-то дата, для таймеров на ПРОМЕЖУТОК ВРЕМЕНИ
+    let answer = false;
+    const now = new Date();
+    const parsedNow = Date.parse(now);
+    const parsedStart = Date.parse(start);
+    const parsedEnd = Date.parse(end);
+    if (parsedStart < parsedNow && parsedEnd > now) {
+        answer = true;
+    }
+    return answer; //проверка, не настала ли какая-то дата, для таймеров на ПРОМЕЖУТОК ВРЕМЕНИ
 }
 
 function checkDateFrom(start) {
-  let answer = false;
-  const now = new Date();
-  const parsedNow = Date.parse(now);
-  const parsedStart = Date.parse(start);
-  if (parsedStart < parsedNow) {
-    answer = true;
-  }
-  return answer; //проверка, не настала ли какая-то дата, для таймеров ПОСЛЕ
+    let answer = false;
+    const now = new Date();
+    const parsedNow = Date.parse(now);
+    const parsedStart = Date.parse(start);
+    if (parsedStart < parsedNow) {
+        answer = true;
+    }
+    return answer; //проверка, не настала ли какая-то дата, для таймеров ПОСЛЕ
 }
 
 function checkDateTo(end) {
-  let answer = false;
-  const now = new Date();
-  const parsedNow = Date.parse(now);
-  const parsedEnd = Date.parse(end);
-  if (parsedNow < parsedEnd) {
-    answer = true;
-  }
-  return answer; //проверка, не настала ли какая-то дата, для таймеров ДО
+    let answer = false;
+    const now = new Date();
+    const parsedNow = Date.parse(now);
+    const parsedEnd = Date.parse(end);
+    if (parsedNow < parsedEnd) {
+        answer = true;
+    }
+    return answer; //проверка, не настала ли какая-то дата, для таймеров ДО
 }
 
 //определение ОС по юзерагенту
 
 const userDeviceArray = [
-  { device: 'Android', platform: /Android/ },
-  { device: 'iOS', platform: /iPhone/ },
-  { device: 'iOS', platform: /iPad/ },
-  { device: 'Symbian', platform: /Symbian/ },
-  { device: 'Windows Phone', platform: /Windows Phone/ },
-  { device: 'Tablet OS', platform: /Tablet OS/ },
-  { device: 'Linux', platform: /Linux/ },
-  { device: 'Windows', platform: /Windows NT/ },
-  { device: 'MacOS', platform: /Macintosh/ },
- ];
+    { device: 'Android', platform: /Android/ },
+    { device: 'iOS', platform: /iPhone/ },
+    { device: 'iOS', platform: /iPad/ },
+    { device: 'Symbian', platform: /Symbian/ },
+    { device: 'Windows Phone', platform: /Windows Phone/ },
+    { device: 'Tablet OS', platform: /Tablet OS/ },
+    { device: 'Linux', platform: /Linux/ },
+    { device: 'Windows', platform: /Windows NT/ },
+    { device: 'MacOS', platform: /Macintosh/ },
+];
 
 const platform = navigator.userAgent;
 
 function getPlatform() {
-  for (let i in userDeviceArray) {
-    if (userDeviceArray[i].platform.test(platform)) {
-      return userDeviceArray[i].device;
+    for (let i in userDeviceArray) {
+        if (userDeviceArray[i].platform.test(platform)) {
+            return userDeviceArray[i].device;
         }
-      }
-  return 'Неизвестная платформа!' + platform;
-  }
+    }
+    return 'Неизвестная платформа!' + platform;
+}
