@@ -118,6 +118,31 @@ function visabilityCheck(target) {
     return false;
 }
 
+//проверка на наличие элемента во вьюпорте через intersectionObserver
+
+const observer = new IntersectionObserver(
+    (entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                //наполовину во вьюпорте
+            } else {
+                //нет во вьюпорте
+            }
+        });
+    },
+    { threshold: [0.5] }
+);
+
+observer.observe(el);
+
+//отсортировать элементы по ширине
+
+const list = document.querySelector('.list');
+const items = document.querySelectorAll('.items');
+const itemsArr = Array.from(items);
+itemsArr.sort((x, y) => x.offsetWidth - y.offsetWidth);
+list.replaceChildren(...itemsArr);
+
 //debounce
 
 function debounce(f, ms) {
