@@ -26,14 +26,14 @@ const smoothScroll = function (target, duration = 500) {
 
 const setSmoothScrollEvents = (from, to) => {
     const setOneEvent = (from, to) => {
-        from.addEventListener('pointerdown', () => {
+        from.addEventListener("pointerdown", () => {
             smoothScroll(to);
         });
     };
 
     const setMultiplyEvents = (from, to) => {
         for (let i = 0; i < from.length; i++) {
-            from[i].addEventListener('pointerdown', () => {
+            from[i].addEventListener("pointerdown", () => {
                 smoothScroll(to);
             });
         }
@@ -46,22 +46,22 @@ const setSmoothScrollEvents = (from, to) => {
 
 const setSmoothScrollEvents = (from, to) => {
     const setOneEvent = (from, to) => {
-        from.addEventListener('pointerdown', () => {
+        from.addEventListener("pointerdown", () => {
             to.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest',
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
             });
         });
     };
 
     const setMultiplyEvents = (from, to) => {
         for (let i = 0; i < from.length; i++) {
-            from[i].addEventListener('pointerdown', () => {
+            from[i].addEventListener("pointerdown", () => {
                 to.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                    inline: 'nearest',
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
                 });
             });
         }
@@ -103,16 +103,11 @@ function visabilityCheck(target) {
 
 function visabilityCheck(target) {
     const targetTop = window.pageYOffset + target.getBoundingClientRect().top;
-    const targetBottom =
-        window.pageYOffset + target.getBoundingClientRect().bottom;
-    const windowBottom =
-        window.pageYOffset + document.documentElement.clientHeight;
+    const targetBottom = window.pageYOffset + target.getBoundingClientRect().bottom;
+    const windowBottom = window.pageYOffset + document.documentElement.clientHeight;
     const screenCenter = document.documentElement.clientHeight / 2;
     //screenCenter это координаты, относительно которых проводится проверка. уменьшая коэф.деления, двигаем вверх, увеличивая, вниз относительно вьюпорта
-    if (
-        windowBottom - targetTop > screenCenter &&
-        windowBottom < targetBottom + screenCenter
-    ) {
+    if (windowBottom - targetTop > screenCenter && windowBottom < targetBottom + screenCenter) {
         return true;
     }
     return false;
@@ -137,38 +132,29 @@ observer.observe(el);
 
 //отсортировать элементы по ширине
 
-const list = document.querySelector('.list');
-const items = document.querySelectorAll('.items');
+const list = document.querySelector(".list");
+const items = document.querySelectorAll(".items");
 const itemsArr = Array.from(items);
 itemsArr.sort((x, y) => x.offsetWidth - y.offsetWidth);
 list.replaceChildren(...itemsArr);
 
 //debounce
 
-function debounce(f, ms) {
-    let isCooldown = false;
-
-    return function () {
-        if (isCooldown) return;
-
-        f.apply(this, arguments);
-
-        isCooldown = true;
-
-        setTimeout(() => (isCooldown = false), ms);
-    };
-}
+const debounce = (method, delay) => {
+    clearTimeout(method._tId);
+    method._tId = setTimeout(function () {
+        method();
+    }, delay);
+};
 
 //пример
 
 window.addEventListener(
-    'scroll',
+    "scroll",
     debounce(() => {
         for (let i = 0; i < heroItems.length; i++) {
             if (visabilityCheck(heroItems[i])) {
-                heroBg.className = `page-m-free-demo__background-wrap hand${
-                    i + 1
-                }`;
+                heroBg.className = `page-m-free-demo__background-wrap hand${i + 1}`;
             }
         }
     }, 150)
@@ -213,15 +199,15 @@ function checkDateTo(end) {
 //определение ОС по юзерагенту
 
 const userDeviceArray = [
-    { device: 'Android', platform: /Android/ },
-    { device: 'iOS', platform: /iPhone/ },
-    { device: 'iOS', platform: /iPad/ },
-    { device: 'Symbian', platform: /Symbian/ },
-    { device: 'Windows Phone', platform: /Windows Phone/ },
-    { device: 'Tablet OS', platform: /Tablet OS/ },
-    { device: 'Linux', platform: /Linux/ },
-    { device: 'Windows', platform: /Windows NT/ },
-    { device: 'MacOS', platform: /Macintosh/ },
+    { device: "Android", platform: /Android/ },
+    { device: "iOS", platform: /iPhone/ },
+    { device: "iOS", platform: /iPad/ },
+    { device: "Symbian", platform: /Symbian/ },
+    { device: "Windows Phone", platform: /Windows Phone/ },
+    { device: "Tablet OS", platform: /Tablet OS/ },
+    { device: "Linux", platform: /Linux/ },
+    { device: "Windows", platform: /Windows NT/ },
+    { device: "MacOS", platform: /Macintosh/ },
 ];
 
 const platform = navigator.userAgent;
@@ -232,5 +218,5 @@ function getPlatform() {
             return userDeviceArray[i].device;
         }
     }
-    return 'Неизвестная платформа!' + platform;
+    return "Неизвестная платформа!" + platform;
 }
