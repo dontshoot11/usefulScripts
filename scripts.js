@@ -99,7 +99,14 @@ function visabilityCheck(target) {
     }
 }
 
-//еще одна функция, проверяющая, находится ли объект во вьюпорте (в данном случае, пересек ли он середину экрана верхней границей)
+//функция, проверяющая, находится ли объект во вьюпорте относительно центра экрана (верхняя граница выше середины, нижняя ниже)
+
+function visabilityCheck(target) {
+    const screenCenter = document.documentElement.clientHeight / 2;
+    return target.getBoundingClientRect().top < screenCenter && target.getBoundingClientRect().bottom > screenCenter;
+}
+
+//еще одна функция, проверяющая, находится ли объект во вьюпорте (в данном случае, пересек ли он середину экрана верхней границей при прокрутке)
 
 function visabilityCheck(target) {
     const targetTop = window.pageYOffset + target.getBoundingClientRect().top;
@@ -113,7 +120,7 @@ function visabilityCheck(target) {
     return false;
 }
 
-//проверка на наличие элемента во вьюпорте через intersectionObserver
+//same через intersectionObserver
 
 const observer = new IntersectionObserver(
     (entries, observer) => {
