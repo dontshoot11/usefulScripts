@@ -156,7 +156,22 @@ const debounce = (method, delay) => {
 
 //пример
 
-window.addEventListener("scroll", () => debounce(() => functionWithDelay(), 500));
+window.addEventListener("scroll", () => debounce(() => myFunction(), 500));
+
+//throttle
+
+function throttle(fn, wait) {
+    let time = Date.now();
+    return function () {
+        if (time + wait - Date.now() < 0) {
+            fn();
+            time = Date.now();
+        }
+    };
+}
+
+//пример
+window.addEventListener("scroll", throttle(myFunction, 500));
 
 //функции, проверяющие соответствие текущей даты параметрам
 
