@@ -156,16 +156,7 @@ const debounce = (method, delay) => {
 
 //пример
 
-window.addEventListener(
-    "scroll",
-    debounce(() => {
-        for (let i = 0; i < heroItems.length; i++) {
-            if (visabilityCheck(heroItems[i])) {
-                heroBg.className = `page-m-free-demo__background-wrap hand${i + 1}`;
-            }
-        }
-    }, 150)
-);
+window.addEventListener("scroll", () => debounce(() => functionWithDelay(), 500));
 
 //функции, проверяющие соответствие текущей даты параметрам
 
